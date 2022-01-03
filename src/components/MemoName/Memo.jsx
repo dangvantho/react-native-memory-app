@@ -1,10 +1,8 @@
-import { firstName, lastName } from '../../const'
-import React, { useEffect, useState } from 'react'
-import { View, Text, StyleSheet, Image, FlatList } from 'react-native'
-import Item from './Item.jsx'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { ScrollView } from 'react-native-web'
-
+import { firstName, lastName } from "../../const"
+import React, { useEffect, useState } from "react"
+import { View, StyleSheet, Image, Dimensions, Text, ImageBackground } from "react-native"
+import FlatListCustom from "../FlatListCustom"
+import peoples from "../../asset/mapImages"
 export default function MemoName({ limit }) {
   const [name, setName] = useState([])
   useEffect(() => {
@@ -16,8 +14,8 @@ export default function MemoName({ limit }) {
     const images = randomImage(limit)
     for (let i = 0; i < limit; i++) {
       random.push({
-        name: names[i],
-        img: images[i],
+        title: names[i],
+        img: peoples[images[i]],
       })
     }
     setName(random)
@@ -25,7 +23,7 @@ export default function MemoName({ limit }) {
   function randomName() {
     return (
       lastName[Math.floor(Math.random() * lastName.length)] +
-      ' ' +
+      " " +
       firstName[Math.floor(Math.random() * firstName.length)]
     )
   }
@@ -34,7 +32,7 @@ export default function MemoName({ limit }) {
     let result = []
     for (let i = 1; i <= 1000; i++) {
       const path = `00000${i}`
-      images.push(`${path.slice(path.length - 6)}.jpg`)
+      images.push(`${path.slice(path.length - 6)}`)
     }
     for (let i = 1; i <= limit; i++) {
       const imgIndex = Math.floor(Math.random() * images.length)
@@ -44,12 +42,55 @@ export default function MemoName({ limit }) {
     return result
   }
   return (
-    <SafeAreaView>
-      <FlatList
-        data={name}
-        renderItem={Item}
+    <View style={styles.container}>
+      <FlatListCustom
+        items={name}
         keyExtractor={(item) => item.img}
+        numColumns={2}
+        renderItem={DefaultItem}
       />
-    </SafeAreaView>
+    </View>
   )
 }
+const DefaultItem = ({
+  item,
+  height = 'auto',
+  color = "#fff",
+  bg = "blue",
+}) => {
+  return (
+    <View
+      style={{
+        ...styles.items,
+        height,
+        backgroundColor: item.transparent ? "transparent" : bg,
+      }}
+    >
+      <View style={styles.img}>
+        <ImageBackground style={{ width: '100%', height: '100%' }} source={item.img} />
+        {/* <Image style={{}} resizeMode={"contain"} source={item.img} /> */}
+      </View>
+      <Text style={{ ...styles.text, color }}>{item.title}</Text>
+    </View>
+  )
+}
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginTop: 0,
+  },
+  items: {
+    justifyContent: 'space-between',
+    alignItems: "center",
+    margin: 1,
+    flex: 1,
+  },
+  text: {
+    fontSize: 16,
+    marginVertical: 10
+  },
+  img: {
+    width: '100%',
+    height: 200
+  },
+})

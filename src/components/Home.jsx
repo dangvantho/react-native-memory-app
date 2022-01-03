@@ -1,17 +1,22 @@
 import React from 'react'
-import { View, Text, StyleSheet, Image } from 'react-native'
+import { View, Text, StyleSheet, Image, Button  } from 'react-native'
+// import peoples from '../asset/mapImages'
 
 export default function Home({ title, navigation }) {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>{title}</Text>
-      <Image source={require('../asset/a.jpg')} />
-      <Text
+      {/* <Image source={peoples['000001']} /> */}
+      <Button
+        title={'Ghi nhớ tên và khuôn mặt'}
+        style={{}}
+        onPress={() => navigation.navigate('MemoryName', { limit: 100 })}
+      />
+      <Button
+        title={'Ghi nhớ số'}
         style={styles.button}
-        onPress={() => navigation.navigate('MemoryName', { limit: 200 })}
-      >
-        Chuyển sang trang khác
-      </Text>
+        onPress={() => navigation.navigate('MemoryNumber', { limit: 100 })}
+      />
     </View>
   )
 }
@@ -19,7 +24,6 @@ export default function Home({ title, navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'red',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -30,6 +34,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   button: {
-    // flexDirection: 'column',
+    backgroundColor: 'red'
   },
 })
